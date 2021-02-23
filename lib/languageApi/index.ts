@@ -1,9 +1,9 @@
 import language from "@google-cloud/language"
 
 const client = new language.LanguageServiceClient({
-  projectId: process.env.GCP_PROJECT_ID,
+  projectId: "nri-hackathon-305314",
   credentials: {
-    client_email: process.env.GCP_CLIENT_EMAIL,
+    client_email: "test-701@nri-hackathon-305314.iam.gserviceaccount.com",
     private_key: (process.env.GCP_PRIVATE_KEY as string).replace(/\\n/g, "\n"),
   },
 })

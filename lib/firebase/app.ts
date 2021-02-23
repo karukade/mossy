@@ -4,8 +4,9 @@ if (!firebase.apps.length) {
   firebase.initializeApp({
     // @ts-ignore
     credential: firebase.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      projectId: "nri-hackathon",
+      clientEmail:
+        "firebase-adminsdk-qjug7@nri-hackathon.iam.gserviceaccount.com",
       privateKey: (process.env.FIREBASE_PRIVATE_KEY as string).replace(
         /\\n/g,
         "\n"
