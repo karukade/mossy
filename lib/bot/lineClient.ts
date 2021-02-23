@@ -1,6 +1,6 @@
 import * as line from "@line/bot-sdk"
 const config = {
-  channelSecret: process.env.LINE_SECRET,
+  channelSecret: process.env.LINE_SEC,
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
 }
 
