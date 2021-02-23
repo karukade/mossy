@@ -1,7 +1,8 @@
 import * as line from "@line/bot-sdk"
 const config = {
   channelSecret: process.env.LINE_SEC,
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
+  channelAccessToken:
+    "OnVtwdcF5RfclZR/lfRpiBUCUmHkr7HNfl8ZqmzxUwC1cIJ3sBtaJNsV43MA5zDSi7ZW7RW4yWT85qbDrTE1tCikqOWyZdbixLWoy9wxO7UUNWJ4dOtwQ6JUoSFTnIEn62JciOOGTAO+RWCWTTx+uQdB04t89/1O/w1cDnyilFU=",
 }
 
 class Client {
