@@ -46,6 +46,10 @@ const handlers = {
       return
     }
     const score = await analyzeSentiment(text)
+    await lineClient.pushMessage(groupId, {
+      type: "text",
+      text: `${JSON.stringify(score)}`,
+    })
     const positiveScore = score?.score ? score.score * 100 : 0
     const isPositive = positiveScore >= 0
     const userProfile = await lineClient.getGroupMemberProfile(groupId, userId)

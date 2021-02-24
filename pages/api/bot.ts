@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { webhookHandler } from "~/lib/bot/handlers"
-import { LineEventObject } from "~/lib/bot/lineClient"
+import lineClient, { LineEventObject } from "~/lib/bot/lineClient"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -11,8 +11,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const body = req.body as LineEventObject
   try {
     await Promise.all(body.events.map((event) => webhookHandler(event)))
-    res.json({ result: "OK" })
   } catch (e) {
+    await lineClient.pushMessage("U97c820c6e12abbbbccfb8a862040396b", {
+      type: "text",
+      text: `エラーが発生しました。\n${JSON.stringify(e)}`,
+    })
     res.json(e)
   }
 
