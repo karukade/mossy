@@ -4,16 +4,10 @@ import { GroupSummaryResponse, Profile } from "@line/bot-sdk"
 
 export type GroupInfo = GroupSummaryResponse
 
-if (process.env.NODE_ENV === "development") {
-  db.settings({
-    host: "localhost:8080",
-    ssl: false,
-  })
-}
-
 /**
  * ユーザー、グループのDocumentReferenceを返す
  */
+
 const getRef = <RefType extends "user" | "group", Model = GroupInfo>(
   id: string,
   type: RefType
