@@ -16,10 +16,12 @@ export const webhookHandler = async (event: WebhookEvent) => {
     event.source.type === "group"
   ) {
     const { text } = event.message
+    console.log("message", text)
     await lineClient.pushMessage(event.source.groupId, {
       type: "text",
       text,
     })
+    console.log("done pushMessage", event.source.groupId)
   }
   return
   await handlers[(event.type as any) as keyof typeof handlers](event as any)
