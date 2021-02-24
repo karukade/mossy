@@ -15,7 +15,7 @@ type EventBase<Event extends MessageEvent["message"]> = {
   event: Event
 }
 
-const TREE_URL = "https://nri-hackthon-2.vercel.app"
+const TREE_URL = "https://mossy.vercel.app"
 
 const isAskUrl = (text: string) =>
   /^(mossy|モッシー|もっしー)/.test(text.toLowerCase().trim())
