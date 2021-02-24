@@ -10,7 +10,6 @@ const client = new language.LanguageServiceClient({
 })
 
 export const analyzeSentiment = async (text: string) => {
-  console.log("private_key", process.env.GCP_PRIVATE_KEY)
   const [result] = await client.analyzeSentiment({
     document: {
       content: text,
