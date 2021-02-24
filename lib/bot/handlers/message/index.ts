@@ -16,15 +16,15 @@ export const message = async (event: MessageEvent) => {
 
   switch (event.message.type) {
     case "text":
-      await lineClient.replyMessage(event.replyToken, {
+      await lineClient.pushMessage(event.source.groupId, {
         type: "text",
         text: event.message.text,
       })
-    // handlers[event.message.type]({
-    //   event: event.message,
-    //   groupId: event.source.groupId,
-    //   userId: event.source.userId,
-    // })
+      await handlers[event.message.type]({
+        event: event.message,
+        groupId: event.source.groupId,
+        userId: event.source.userId,
+      })
   }
 }
 
