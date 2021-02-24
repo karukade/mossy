@@ -38,6 +38,7 @@ const baseUrl = "https://nri-hackthon-2.vercel.app"
 const handlers = {
   text: async ({ groupId, userId, event }: EventBase<TextEventMessage>) => {
     const { text } = event
+    console.log("text", text)
     if (isAskUrl(text)) {
       await lineClient.pushMessage(groupId, {
         type: "text",
@@ -50,6 +51,7 @@ const handlers = {
       type: "text",
       text: `${JSON.stringify(score)}`,
     })
+    console.log("score", score)
     const positiveScore = score?.score ? score.score * 100 : 0
     const isPositive = positiveScore >= 0
     const userProfile = await lineClient.getGroupMemberProfile(groupId, userId)
