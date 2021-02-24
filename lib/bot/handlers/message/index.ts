@@ -6,7 +6,7 @@ import {
   WebhookEvent,
 } from "@line/bot-sdk"
 import { addMember, addPositiveWord } from "~/lib/firebase/firestore"
-import { analyzeSentiment } from "~/lib/languageApi"
+// import { analyzeSentiment } from "~/lib/languageApi"
 import lineClient from "~/lib/bot/lineClient"
 
 export const message = async (event: MessageEvent) => {
@@ -46,7 +46,7 @@ const handlers = {
       })
       return
     }
-    const score = await analyzeSentiment(text)
+    const score = { score: 0.8 } //await analyzeSentiment(text)
     await lineClient.pushMessage(groupId, {
       type: "text",
       text: `${JSON.stringify(score)}`,
