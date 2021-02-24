@@ -4,6 +4,12 @@ import { GroupSummaryResponse, Profile } from "@line/bot-sdk"
 
 export type GroupInfo = GroupSummaryResponse
 
+export type Message = {
+  text: string
+  user: string
+  id: string
+}
+
 /**
  * ユーザー、グループのDocumentReferenceを返す
  */
@@ -27,12 +33,6 @@ const createConverter = <T extends Record<string, any>>() => {
       return snapshot.data() as T
     },
   }
-}
-
-type Message = {
-  text: string
-  user: string
-  id: string
 }
 
 export const addPositiveWord = async (groupId: string, message: Message) => {
@@ -61,7 +61,13 @@ export const addMember = async (groupId: string, memberProfile: Profile) => {
 /**
  * グループデータの取得
  */
-export const fetchGroupData = async (groupId: string) => {
+export type GroupDate = {
+  profile: GroupSummaryResponse
+  messages: Message[]
+  members: Profile[]
+} | null
+
+export const fetchGroupData = async (groupId: string): Promise<GroupDate> => {
   const ref = getRef(groupId, "group")
   const doc = await ref.get()
   if (!doc.exists) return null

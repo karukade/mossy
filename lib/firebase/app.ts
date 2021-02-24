@@ -23,7 +23,7 @@ class FirebaseApp {
       db = firebase.firestore()
       if (process.env.NODE_ENV === "development")
         db.settings({
-          host: "http://localhost:8080",
+          host: "localhost:8080",
           ssl: false,
         })
     }

@@ -9,6 +9,24 @@ import { addMember, addPositiveWord } from "~/lib/firebase/firestore"
 import { analyzeSentiment } from "~/lib/languageApi"
 import lineClient from "~/lib/bot/lineClient"
 
+type EventBase<Event extends MessageEvent["message"]> = {
+  groupId: string
+  userId: string
+  event: Event
+}
+
+const TREE_URL = "https://nri-hackthon-2.vercel.app"
+
+const isAskUrl = (text: string) =>
+  /^(mossy|モッシー|もっしー)/.test(text.toLowerCase().trim())
+
+const isGroupeEvent = (
+  event: WebhookEvent
+): event is WebhookEvent & { source: Group } => event.source.type === "group"
+
+const hasHandlers = (type: string): type is keyof typeof handlers =>
+  type in handlers
+
 export const message = async (event: MessageEvent) => {
   if (!hasHandlers(event.message.type)) return
   if (!isGroupeEvent(event)) return
@@ -16,10 +34,6 @@ export const message = async (event: MessageEvent) => {
 
   switch (event.message.type) {
     case "text":
-      await lineClient.pushMessage(event.source.groupId, {
-        type: "text",
-        text: event.message.text,
-      })
       await handlers[event.message.type]({
         event: event.message,
         groupId: event.source.groupId,
@@ -28,34 +42,19 @@ export const message = async (event: MessageEvent) => {
   }
 }
 
-const hasHandlers = (type: string): type is keyof typeof handlers =>
-  type in handlers
-
-type EventBase<Event extends MessageEvent["message"]> = {
-  groupId: string
-  userId: string
-  event: Event
-}
-
-const baseUrl = "https://nri-hackthon-2.vercel.app"
-
 const handlers = {
   text: async ({ groupId, userId, event }: EventBase<TextEventMessage>) => {
     const { text } = event
-    console.log("text", text)
     if (isAskUrl(text)) {
       await lineClient.pushMessage(groupId, {
         type: "text",
-        text: `${baseUrl}/?gid=${groupId}\nだよ！`,
+        text: `${TREE_URL}/?gid=${groupId}\nだよ！`,
       })
       return
     }
+
     const score = await analyzeSentiment(text)
-    await lineClient.pushMessage(groupId, {
-      type: "text",
-      text: `${JSON.stringify(score)}`,
-    })
-    console.log("score", score)
+
     const positiveScore = score?.score ? score.score * 100 : 0
     const isPositive = positiveScore >= 0
     const userProfile = await lineClient.getGroupMemberProfile(groupId, userId)
@@ -75,10 +74,3 @@ const handlers = {
     })
   },
 }
-
-const isAskUrl = (text: string) =>
-  /^(Mossy|mossy|mossy|MOSSY|モッシー|もっしー)/.test(text.trim())
-
-const isGroupeEvent = (
-  event: WebhookEvent
-): event is WebhookEvent & { source: Group } => event.source.type === "group"
