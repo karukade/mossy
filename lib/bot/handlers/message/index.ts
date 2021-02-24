@@ -20,12 +20,11 @@ export const message = async (event: MessageEvent) => {
         type: "text",
         text: event.message.text,
       })
-      return
-      handlers[event.message.type]({
-        event: event.message,
-        groupId: event.source.groupId,
-        userId: event.source.userId,
-      })
+    // handlers[event.message.type]({
+    //   event: event.message,
+    //   groupId: event.source.groupId,
+    //   userId: event.source.userId,
+    // })
   }
 }
 
