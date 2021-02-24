@@ -8,11 +8,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  console.log("body", req.body)
-
   const body = req.body as LineEventObject
-
-  await Promise.all(body.events.map((event) => webhookHandler(event)))
+  try {
+    await Promise.all(body.events.map((event) => webhookHandler(event)))
+    res.json({ result: "OK" })
+  } catch (e) {
+    res.json(e)
+  }
 
   res.end()
 }
