@@ -48,7 +48,7 @@ const handlers = {
     if (isAskUrl(text)) {
       await lineClient.pushMessage(groupId, {
         type: "text",
-        text: `${TREE_URL}/${groupId}\nだよ！`,
+        text: `${TREE_URL}/tree/${groupId}\nだよ！`,
       })
       return
     }
