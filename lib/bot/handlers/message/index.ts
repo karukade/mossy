@@ -6,7 +6,7 @@ import {
   WebhookEvent,
 } from "@line/bot-sdk"
 import { addMember, addPositiveWord } from "~/lib/firebase/firestore"
-// import { analyzeSentiment } from "~/lib/languageApi"
+import { analyzeSentiment } from "~/lib/languageApi"
 import lineClient from "~/lib/bot/lineClient"
 
 export const message = async (event: MessageEvent) => {
@@ -16,6 +16,11 @@ export const message = async (event: MessageEvent) => {
 
   switch (event.message.type) {
     case "text":
+      await lineClient.replyMessage(event.replyToken, {
+        type: "text",
+        text: event.message.text,
+      })
+      return
       handlers[event.message.type]({
         event: event.message,
         groupId: event.source.groupId,
@@ -46,7 +51,7 @@ const handlers = {
       })
       return
     }
-    const score = { score: 0.8 } //await analyzeSentiment(text)
+    const score = await analyzeSentiment(text)
     await lineClient.pushMessage(groupId, {
       type: "text",
       text: `${JSON.stringify(score)}`,
