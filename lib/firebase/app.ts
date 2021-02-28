@@ -21,11 +21,11 @@ class FirebaseApp {
         }),
       })
       db = firebase.firestore()
-      if (process.env.NODE_ENV === "development")
-        db.settings({
-          host: "localhost:8080",
-          ssl: false,
-        })
+      // if (process.env.NODE_ENV === "development")
+      //   db.settings({
+      //     host: "localhost:8080",
+      //     ssl: false,
+      //   })
     }
     this._db = db ?? firebase.firestore()
     this._storage = firebase.storage()

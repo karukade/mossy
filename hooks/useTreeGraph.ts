@@ -1,6 +1,8 @@
 import * as d3 from "d3"
-import { useEffect } from "react"
+import { useEffect, useLayoutEffect } from "react"
 import { Message } from "~/lib/firebase/firestore"
+
+const count = 0
 
 export type DataModel = Message & {
   children?: DataModel[]
@@ -8,19 +10,18 @@ export type DataModel = Message & {
 
 type D3SelectionElm = d3.Selection<SVGGElement, unknown, HTMLElement, any>
 
-export const useTreeGraph = (data: DataModel) => {
+export const useTreeGraph = (
+  data: DataModel,
+  { width, height }: { width: number; height: number }
+) => {
   useEffect(() => {
-    const headerHeight = 60
-    const width = window.innerWidth
-    const height = window.innerHeight - headerHeight
-
-    if (!data) return
+    if (!data || !width) return
     const linkVertical = d3
       .linkVertical()
       // @ts-ignore
       .x((d) => d.x)
       // @ts-ignore
-      .y((d) => height - d.y) as any
+      .y((d) => height - d.y)
 
     const createPath = (
       g: D3SelectionElm,
@@ -167,14 +168,18 @@ export const useTreeGraph = (data: DataModel) => {
         )
       }
 
-      const loop = async () => {
+      const loop = async (n: number) => {
         await Promise.all([animatePath(), animateNodes()])
         posRef = posRef === "a" ? "b" : "a"
-        loop()
+        console.log("loop", n)
+        loop(n)
       }
 
-      loop()
+      loop(count + 1)
     }
     render()
-  }, [])
+    return () => {
+      d3.select("svg").select("g").remove()
+    }
+  }, [width, height])
 }

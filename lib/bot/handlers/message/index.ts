@@ -1,17 +1,17 @@
 import {
-  Group,
   ImageEventMessage,
   MessageEvent,
   TextEventMessage,
-  WebhookEvent,
 } from "@line/bot-sdk"
 import { addMember, addPositiveWord } from "~/lib/firebase/firestore"
 import { analyzeSentiment } from "~/lib/languageApi"
 import lineClient from "~/lib/bot/lineClient"
+import { extractGroupOrRoomId, isGroupeOrRoomEvent } from "../utils"
 
 type EventBase<Event extends MessageEvent["message"]> = {
   groupId: string
   userId: string
+  type: "group" | "room"
   event: Event
 }
 
@@ -20,30 +20,32 @@ const TREE_URL = "https://mossy.vercel.app"
 const isAskUrl = (text: string) =>
   /^(mossy|モッシー|もっしー)/.test(text.toLowerCase().trim())
 
-const isGroupeEvent = (
-  event: WebhookEvent
-): event is WebhookEvent & { source: Group } => event.source.type === "group"
-
 const hasHandlers = (type: string): type is keyof typeof handlers =>
   type in handlers
 
 export const message = async (event: MessageEvent) => {
   if (!hasHandlers(event.message.type)) return
-  if (!isGroupeEvent(event)) return
+  if (!isGroupeOrRoomEvent(event)) return
   if (!event.source.userId) return
 
   switch (event.message.type) {
     case "text":
       await handlers[event.message.type]({
         event: event.message,
-        groupId: event.source.groupId,
+        groupId: extractGroupOrRoomId(event),
         userId: event.source.userId,
+        type: event.source.type,
       })
   }
 }
 
 const handlers = {
-  text: async ({ groupId, userId, event }: EventBase<TextEventMessage>) => {
+  text: async ({
+    groupId,
+    userId,
+    event,
+    type,
+  }: EventBase<TextEventMessage>) => {
     const { text } = event
     if (isAskUrl(text)) {
       await lineClient.pushMessage(groupId, {
@@ -57,7 +59,12 @@ const handlers = {
 
     const positiveScore = score?.score ? score.score * 100 : 0
     const isPositive = positiveScore >= 0
-    const userProfile = await lineClient.getGroupMemberProfile(groupId, userId)
+    const getUserProfile =
+      type === "group"
+        ? lineClient.getGroupMemberProfile
+        : lineClient.getRoomMemberProfile
+
+    const userProfile = await getUserProfile(groupId, userId)
     await addMember(groupId, userProfile)
 
     if (!isPositive) return

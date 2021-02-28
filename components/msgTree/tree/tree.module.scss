@@ -1,0 +1,107 @@
+@import "../vars.scss";
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  30% {
+    transform: scale(1.1, 0.9);
+  }
+  60% {
+    transform: scale(1, 1.1);
+  }
+  90% {
+    transform: scale(1, 0.99);
+  }
+}
+
+@keyframes blace {
+  0% {
+    transform: scale(1, 1);
+  }
+  20% {
+    transform: scale(0.98, 1.03);
+  }
+  90% {
+    transform: scale(1.02, 0.98);
+  }
+}
+
+.container {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  padding: 78px 12px 85px;
+  position: relative;
+  z-index: 2;
+  transform-origin: bottom;
+  animation: blace 4s linear infinite forwards;
+  &::before {
+    content: "";
+    position: absolute;
+    width: $branch-width;
+    border-radius: $branch-width / 2;
+    height: calc(100% - 68px);
+    background: linear-gradient(to right, $branch-color 50%, #544c3c 50%);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+  }
+  &.anim {
+    transform-origin: bottom;
+    animation: bounce 0.7s ease forwards;
+  }
+}
+
+.topOfTree {
+  position: absolute;
+  width: 75px;
+  left: 0;
+  right: 0;
+  top: 0;
+  margin: auto;
+}
+
+.rootOfTree {
+  position: absolute;
+  width: 22%;
+  bottom: 4px;
+  display: flex;
+  left: 0;
+  right: 0;
+  margin: auto;
+  justify-content: space-between;
+  align-items: center;
+  &::before,
+  &::after {
+    content: "";
+    width: 43.5%;
+    padding-top: 44%;
+    background: url(/rootOfTree.svg) no-repeat center bottom/ contain;
+  }
+  &::after {
+    transform: scale(-1, 1);
+  }
+}
+
+.col {
+  flex-basis: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  > * + * {
+    margin-top: 8px;
+  }
+  &.colLeft {
+    padding-right: ($branch-width + ($branch-padding * 2)) / 2;
+    align-items: flex-end;
+  }
+  &.colRight {
+    padding-left: ($branch-width + ($branch-padding * 2)) / 2;
+    padding-bottom: 32px;
+  }
+}

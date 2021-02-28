@@ -1,0 +1,46 @@
+.sun {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(30%, -30%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #dbff00;
+}
+
+.mountain {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 35%;
+  background-blend-mode: screen;
+  &::before,
+  &::after {
+    position: absolute;
+    bottom: 0;
+    transform: translateY(54%) rotate(45deg);
+    content: "";
+    width: 48.2%;
+    padding-top: 48.2%;
+    background: url(/dot@2x.png) repeat left top / 20px 20px,
+      linear-gradient(
+        45deg,
+        #55ba5d 0.82%,
+        #74c8ab 50%,
+        #5cbaef 50%,
+        #94d6fb 100%
+      );
+    background-blend-mode: soft-light;
+  }
+  &::before {
+    left: 0;
+    transform: translate(-30%, 60%) rotate(45deg);
+  }
+  &::after {
+    right: 0;
+  }
+}

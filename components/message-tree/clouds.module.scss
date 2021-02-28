@@ -1,0 +1,15 @@
+@keyframes move-cloud {
+  to {
+    transform: translateX(var(--w));
+  }
+}
+
+.cloud {
+  position: absolute;
+  left: 0;
+  z-index: 0;
+  animation: move-cloud 10s linear infinite forwards;
+  > .inner {
+    padding-top: 58.15%;
+  }
+}

@@ -1,47 +1,34 @@
 import React, { useEffect } from "react"
-import styled from "styled-components"
 import { convertHierarchy } from "~/lib/utils"
 import { useTreeGraph } from "~/hooks/useTreeGraph"
 import { Message } from "~/lib/firebase/firestore"
 import Clouds from "./Clouds"
 import Land from "./Land"
+import styles from "./message-tree.module.scss"
+import { useDimention } from "~/hooks/useDimention"
 
 type Props = {
   messages: Message[]
 }
 
-const headerHeight = 60
-
 const MessageTree: React.FC<Props> = ({ messages }) => {
-  const width = typeof window !== "undefined" ? window.innerWidth : null
-  const height =
-    typeof window !== "undefined" ? window.innerHeight - headerHeight : null
+  const { width, height } = useDimention()
 
-  useTreeGraph(convertHierarchy(messages))
+  useTreeGraph(convertHierarchy(messages), { width, height })
   useEffect(() => {
     document.body.style.setProperty("--w", `${width}px`)
   })
 
   if (!width) return null
+
   return (
-    <StyledContainer>
-      <StyledSvg width={width} height={height}>
+    <div className={styles.container}>
+      <svg className={styles.svg} width={width} height={height}>
         <Land width={width} height={height} />
-      </StyledSvg>
+      </svg>
       <Clouds />
-    </StyledContainer>
+    </div>
   )
 }
-
-const StyledContainer = styled.div`
-  overflow: hidden;
-  position: relative;
-`
-
-const StyledSvg = styled.svg`
-  overflow: visible;
-  position: relative;
-  z-index: 2;
-`
 
 export default MessageTree

@@ -1,0 +1,10 @@
+.container {
+  overflow: hidden;
+  position: relative;
+}
+
+.svg {
+  overflow: visible;
+  position: relative;
+  z-index: 2;
+}

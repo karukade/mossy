@@ -1,0 +1,75 @@
+@import "../vars.scss";
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(5px);
+    transform: scale(0.96, 1.03);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  //animation: float 3.5s ease infinite forwards;
+  &.left {
+    align-items: flex-end;
+    transform-origin: bottom right;
+    .branch {
+      transform: translateX($branch-padding);
+    }
+  }
+  &.right {
+    align-items: flex-start;
+    transform-origin: bottom left;
+    .branch {
+      transform: translateX(-$branch-padding) scale(-1, 1);
+    }
+    .leaf {
+      border-radius: 16px 4px 16px 0px;
+    }
+  }
+}
+
+.leaf {
+  background: url(/bg-message.png) no-repeat left 2px top 2px/ 24px auto,
+    url(/bg-message.png) no-repeat right 2px bottom 2px/ 24px auto,
+    linear-gradient(97.78deg, #3fb681 3.05%, #45d7e0 100%);
+  color: #fff;
+  font-weight: bold;
+  border-radius: 4px 16px 2px 16px;
+  padding: 20px 8px 18px 12px;
+  font-size: 14px;
+  position: relative;
+  z-index: 2;
+  min-width: 6em;
+}
+
+.branch {
+  width: 56px;
+  height: 40px;
+  overflow: hidden;
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    width: 114px;
+    height: 100px;
+    border-radius: 50%;
+    border: solid $branch-width * 0.6 $branch-color;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.bird {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(calc(-100% + 15px));
+}
