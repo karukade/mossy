@@ -11,7 +11,7 @@ type MsgTreeProps = {
 const MsgTree = ({ messages }: MsgTreeProps) => {
   return (
     <div className={styles.container}>
-      <Tree messages={messages} />
+      {messages.length !== 0 && <Tree messages={messages} />}
       <GroundLeafs />
       <Background />
     </div>

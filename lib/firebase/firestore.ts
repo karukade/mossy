@@ -102,3 +102,10 @@ export const fetchGroupData = async (groupId: string): Promise<GroupDate> => {
     members,
   }
 }
+
+/**
+ * グループの削除
+ */
+export const removeGroup = async (groupId: string) => {
+  await getRef(groupId, "group").delete()
+}
