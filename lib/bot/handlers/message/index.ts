@@ -5,7 +5,7 @@ import {
 } from "@line/bot-sdk"
 import { addMember, addPositiveWord } from "~/lib/firebase/firestore"
 import { analyzeSentiment } from "~/lib/languageApi"
-import lineClient from "~/lib/bot/lineClient"
+import lineClient, { getMemberProfile } from "~/lib/bot/lineClient"
 import { extractGroupOrRoomId, isGroupeOrRoomEvent } from "../utils"
 
 type EventBase<Event extends MessageEvent["message"]> = {
@@ -59,12 +59,8 @@ const handlers = {
 
     const positiveScore = score?.score ? score.score * 100 : 0
     const isPositive = positiveScore >= 0
-    const getUserProfile =
-      type === "group"
-        ? lineClient.getGroupMemberProfile
-        : lineClient.getRoomMemberProfile
 
-    const userProfile = await getUserProfile(groupId, userId)
+    const userProfile = await getMemberProfile(type, groupId, userId)
     await addMember(groupId, userProfile)
 
     if (!isPositive) return

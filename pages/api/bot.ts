@@ -12,6 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await Promise.all(body.events.map((event) => webhookHandler(event)))
   } catch (e) {
+    console.log("ERROR", e)
     await lineClient.pushMessage("U97c820c6e12abbbbccfb8a862040396b", {
       type: "text",
       text: `エラーが発生しました。\n${JSON.stringify(e)}`,

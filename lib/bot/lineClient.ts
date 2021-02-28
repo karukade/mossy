@@ -19,4 +19,13 @@ export type LineEventObject = {
 
 export const middleWare = line.middleware(config)
 
+export const getMemberProfile = (
+  type: "group" | "room",
+  gid: string,
+  uid: string
+) => {
+  if (type === "group") return Client.instance.getGroupMemberProfile(gid, uid)
+  return Client.instance.getRoomMemberProfile(gid, uid)
+}
+
 export default Client.instance
