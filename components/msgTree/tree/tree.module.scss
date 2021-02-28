@@ -29,6 +29,7 @@
 }
 
 .container {
+  width: 100%;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
@@ -38,13 +39,16 @@
   position: relative;
   z-index: 2;
   transform-origin: bottom;
-  animation: blace 4s linear infinite forwards;
+  &.start {
+    animation: blace 4s linear infinite forwards;
+  }
   &::before {
     content: "";
     position: absolute;
     width: $branch-width;
     border-radius: $branch-width / 2;
     height: calc(100% - 68px);
+    transform-origin: bottom;
     background: linear-gradient(to right, $branch-color 50%, #544c3c 50%);
     left: 0;
     right: 0;
@@ -59,7 +63,7 @@
 
 .topOfTree {
   position: absolute;
-  width: 75px;
+  width: 79.9px;
   left: 0;
   right: 0;
   top: 0;

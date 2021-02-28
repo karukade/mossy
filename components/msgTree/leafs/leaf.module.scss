@@ -1,24 +1,24 @@
 @import "../vars.scss";
 
-@keyframes float {
+@keyframes pop {
   0% {
-    transform: translateY(0px);
+    transform: scale(0, 0) rotate(-20deg);
   }
-  50% {
-    transform: translateY(5px);
-    transform: scale(0.96, 1.03);
+  80% {
+    transform: scale(1.01, 1.01);
   }
   100% {
-    transform: translateY(0px);
+    transform: scale(1, 1) rotate(0deg);
   }
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  //animation: float 3.5s ease infinite forwards;
+  animation: pop 0.4s cubic-bezier(0.45, 0.97, 0.65, 1.32) forwards;
   &.left {
     align-items: flex-end;
+    transform: scale(0, 0) rotate(-20deg);
     transform-origin: bottom right;
     .branch {
       transform: translateX($branch-padding);
@@ -26,6 +26,7 @@
   }
   &.right {
     align-items: flex-start;
+    transform: scale(0, 0) rotate(20deg);
     transform-origin: bottom left;
     .branch {
       transform: translateX(-$branch-padding) scale(-1, 1);

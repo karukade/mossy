@@ -49,6 +49,6 @@
   height: 100%;
   background: url(/cloud.png) repeat-x left top/ 417px auto;
   position: absolute;
-  z-index: 0;
+  z-index: 1;
   animation: move-cloud 10s linear infinite forwards;
 }
