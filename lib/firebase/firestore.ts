@@ -76,13 +76,12 @@ export type GroupDate = {
 } | null
 
 export const fetchGroupData = async (groupId: string): Promise<GroupDate> => {
-  console.log("fetch group data")
   const ref = getRef(groupId, "group")
   const doc = await ref.get()
+
   if (!doc.exists) return null
   const groupData = doc.data()
   if (!groupData) return null
-
   const profile =
     groupData.type === "group"
       ? await lineClient.getGroupSummary(groupData.id)
