@@ -1,10 +1,8 @@
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/dist/client/router"
 import Head from "next/head"
-import { useRef, useState } from "react"
-import CloudTree from "~/components/cloud-tree"
+import { useRef } from "react"
 import Header from "~/components/header"
-import MessageTree from "~/components/message-tree"
 import Tree from "~/components/msgTree"
 import { useGlobalCssVars } from "~/hooks/useGlobalCssVars"
 import { fetchGroupData, GroupDate } from "~/lib/firebase/firestore"
@@ -31,7 +29,6 @@ export default function Group({ data }: { data: GroupDate }) {
       </Head>
       <Header ref={headerRef} {...data.profile} />
       <Tree messages={data.messages} />
-      {/* <MessageTree messages={data.messages} /> */}
     </div>
   )
 }
