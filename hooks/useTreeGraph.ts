@@ -1,5 +1,5 @@
 import * as d3 from "d3"
-import { useEffect, useLayoutEffect } from "react"
+import { useEffect } from "react"
 import { Message } from "~/lib/firebase/firestore"
 
 const count = 0
@@ -27,20 +27,23 @@ export const useTreeGraph = (
       g: D3SelectionElm,
       links: d3.HierarchyLink<DataModel>[]
     ) => {
-      return g
-        .attr("fill", "none")
-        .selectAll("path")
-        .data(links)
-        .join("path")
-        .attr("stroke", (d) => {
-          return "#934606"
-        })
-        .attr("id", (d, i) => `path-${i}`)
-        .attr("stroke-opacity", 1)
-        .attr("stroke-width", () => Math.floor(Math.random() * (11 - 4) + 4))
-        .attr("stroke-dasharray", "400 400")
-        .attr("stroke-dashoffset", "400")
-        .attr("d", linkVertical)
+      return (
+        g
+          .attr("fill", "none")
+          .selectAll("path")
+          .data(links)
+          .join("path")
+          .attr("stroke", (d) => {
+            return "#934606"
+          })
+          .attr("id", (d, i) => `path-${i}`)
+          .attr("stroke-opacity", 1)
+          .attr("stroke-width", () => Math.floor(Math.random() * (11 - 4) + 4))
+          .attr("stroke-dasharray", "400 400")
+          .attr("stroke-dashoffset", "400")
+          //@ts-ignore
+          .attr("d", linkVertical)
+      )
     }
 
     const createNode = (
@@ -153,6 +156,7 @@ export const useTreeGraph = (
           .data(pathPosition[posRef])
           .transition()
           .duration(4000)
+          //@ts-ignore
           .attr("d", linkVertical)
           .end()
 
