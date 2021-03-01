@@ -39,6 +39,7 @@
   position: relative;
   z-index: 2;
   transform-origin: bottom;
+  will-change: transform;
   &.start {
     animation: blace 4s linear infinite forwards;
   }
@@ -72,7 +73,7 @@
 
 .rootOfTree {
   position: absolute;
-  width: 22%;
+  width: 80px;
   bottom: 4px;
   display: flex;
   left: 0;
