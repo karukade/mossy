@@ -41,11 +41,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         data: null,
       },
     }
-  const groupDate: GroupDate = {
-    profile: null,
-    messages: [],
-    members: [],
-  } // await fetchGroupData(group)
+  const groupDate: GroupDate = await fetchGroupData(group)
 
   return {
     props: {
