@@ -2,6 +2,7 @@ import * as firebase from "firebase-admin"
 import { db } from "./app"
 import { GroupSummaryResponse, Profile } from "@line/bot-sdk"
 import lineClient from "../bot/lineClient"
+import { FireStoreReadError, firestoreReadErrorMessage } from "../constants"
 
 export type GroupInfo = {
   id: string
@@ -79,23 +80,32 @@ export const fetchGroupData = async (groupId: string): Promise<GroupDate> => {
   const ref = getRef(groupId, "group")
   const doc = await ref.get()
 
-  if (!doc.exists) return null
+  if (!doc.exists)
+    throw new FireStoreReadError(firestoreReadErrorMessage.noExists(ref.path))
+
   const groupData = doc.data()
-  if (!groupData) return null
+
+  if (!groupData)
+    throw new FireStoreReadError(firestoreReadErrorMessage.noData(ref.path))
+
   const profile =
     groupData.type === "group"
       ? await lineClient.getGroupSummary(groupData.id)
       : null
+
   const messagesSnapShots = await db
     .collection(`group/${groupId}/messages`)
     .withConverter(createConverter<Message>())
     .get()
+
   const memberSnapShots = await db
     .collection(`group/${groupId}/members`)
     .withConverter(createConverter<Profile>())
     .get()
+
   const messages = messagesSnapShots.docs.map((doc) => doc.data())
   const members = memberSnapShots.docs.map((doc) => doc.data())
+
   return {
     profile,
     messages,
