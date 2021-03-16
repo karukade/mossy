@@ -2,7 +2,13 @@ import * as line from "@line/bot-sdk"
 import { getDecryptedSecret } from "~/lib/utils"
 import { LINE_CONFIG_ENCRYPTED } from "./constants"
 
-const config = getDecryptedSecret(LINE_CONFIG_ENCRYPTED)
+const config =
+  process.env.NODE_ENV === "development"
+    ? {
+        channelSecret: process.env.LINE_SECRET,
+        channelAccessToken: process.env.LINE_ACCESS_TOKEN,
+      }
+    : getDecryptedSecret(LINE_CONFIG_ENCRYPTED)
 
 class Client {
   private static _instance: line.Client
