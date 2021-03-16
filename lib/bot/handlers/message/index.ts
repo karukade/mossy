@@ -22,6 +22,8 @@ type EventBase<Event extends MessageEvent["message"]> = {
 const isAskUrl = (text: string) =>
   /^(mossy|モッシー|もっしー)/.test(text.toLowerCase().trim())
 
+const isDebug = (text: string) => /^debug:mossy:/.test(text)
+
 const hasHandlers = (type: string): type is keyof typeof handlers =>
   type in handlers
 
@@ -51,6 +53,17 @@ const handlers = {
     const { text } = event
     if (isAskUrl(text)) {
       await sendTextMessage(groupId, MESSAGES.url(groupId))
+      return
+    }
+
+    if (isDebug(text)) {
+      const [command] = text.split(":").slice(-1)
+      if (command === "grow" || command === "moss") {
+        await sendTextMessage(groupId, MESSAGES.grow(groupId))
+      }
+      if (command === "moss") {
+        await sendTextMessage(groupId, MESSAGES.mossLink())
+      }
       return
     }
 
