@@ -1,4 +1,6 @@
 import * as firebase from "firebase-admin"
+import { getDecryptedSecret } from "../utils"
+import { FIREBASE_CERT_ENCRYPTED } from "./constants"
 
 class FirebaseApp {
   private static _instance: FirebaseApp
@@ -9,16 +11,9 @@ class FirebaseApp {
 
     if (firebase.apps.length === 0) {
       firebase.initializeApp({
-        // @ts-ignore
-        credential: firebase.credential.cert({
-          projectId: "nri-hackathon",
-          clientEmail:
-            "firebase-adminsdk-qjug7@nri-hackathon.iam.gserviceaccount.com",
-          privateKey: (process.env.FIREBASE_PRIVATE_KEY as string).replace(
-            /\\n/g,
-            "\n"
-          ),
-        }),
+        credential: firebase.credential.cert(
+          getDecryptedSecret(FIREBASE_CERT_ENCRYPTED)
+        ),
       })
       db = firebase.firestore()
       // if (process.env.NODE_ENV === "development")

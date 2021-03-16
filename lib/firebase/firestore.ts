@@ -2,7 +2,7 @@ import * as firebase from "firebase-admin"
 import { db } from "./app"
 import { GroupSummaryResponse, Profile } from "@line/bot-sdk"
 import lineClient from "../bot/lineClient"
-import { FireStoreReadError, firestoreReadErrorMessage } from "../constants"
+import { FireStoreReadError, firestoreReadErrorMessage } from "./constants"
 
 export type GroupInfo = {
   id: string

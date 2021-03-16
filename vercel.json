@@ -1,0 +1,6 @@
+{
+  "env": {
+    "ENCRYPTION_IV": "mossy-encryption-iv",
+    "ENCRYPTION_KEY": "mossy-encryption-key"
+  }
+}
