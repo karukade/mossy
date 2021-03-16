@@ -76,6 +76,7 @@ const handlers = {
     await addMember(groupId, userProfile)
 
     if (!isPositive) return
+
     const messageCount = await addPositiveWord(groupId, {
       text,
       user: userProfile.displayName,
