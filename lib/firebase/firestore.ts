@@ -6,6 +6,7 @@ import { FireStoreReadError, firestoreReadErrorMessage } from "../constants"
 
 export type GroupInfo = {
   id: string
+  messageCount: number
   type: "group" | "room"
 }
 
@@ -41,7 +42,25 @@ const createConverter = <T extends Record<string, any>>() => {
 }
 
 export const addPositiveWord = async (groupId: string, message: Message) => {
-  await db.collection(`group/${groupId}/messages`).add(message)
+  const groupRef = getRef(groupId, "group")
+  return db.runTransaction(async (t) => {
+    const doc = await t.get(groupRef)
+    const data = doc.data()
+    if (!data)
+      throw new FireStoreReadError(
+        firestoreReadErrorMessage.noData(groupRef.path)
+      )
+
+    const newCount = ++data.messageCount
+
+    await t.update(groupRef, {
+      messageCount: newCount,
+    })
+
+    await db.collection(`group/${groupId}/messages`).add(message)
+
+    return newCount
+  })
 }
 
 /**
@@ -54,6 +73,7 @@ export const addGroup = async (id: string, type: GroupInfo["type"]) => {
     await ref.set({
       id,
       type,
+      messageCount: 0,
     })
 }
 
@@ -67,15 +87,15 @@ export const addMember = async (groupId: string, memberProfile: Profile) => {
   memberRef.set(memberProfile)
 }
 
-/**
- * グループデータの取得
- */
 export type GroupDate = {
   profile: GroupSummaryResponse | null
   messages: Message[]
   members: Profile[]
 } | null
 
+/**
+ * グループデータの取得
+ */
 export const fetchGroupData = async (groupId: string): Promise<GroupDate> => {
   const ref = getRef(groupId, "group")
   const doc = await ref.get()

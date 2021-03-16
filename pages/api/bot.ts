@@ -31,6 +31,7 @@ export default async (
   req: IncomingMessage & { body: any },
   res: ServerResponse
 ) => {
+  console.log("NODE_ENV", process.env)
   if (req.method !== "POST") {
     res.end()
     return

@@ -28,4 +28,20 @@ export const getMemberProfile = (
   return Client.instance.getRoomMemberProfile(gid, uid)
 }
 
+export const sendTextMessage = (
+  id: string,
+  text: string,
+  type: "push" | "reply" = "push"
+) => {
+  const msg = {
+    type: "text",
+    text,
+  } as const
+  if (type === "push") {
+    return Client.instance.pushMessage(id, msg)
+  } else {
+    return Client.instance.replyMessage(id, msg)
+  }
+}
+
 export default Client.instance
