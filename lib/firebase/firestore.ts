@@ -51,7 +51,8 @@ export const addPositiveWord = async (groupId: string, message: Message) => {
         firestoreReadErrorMessage.noData(groupRef.path)
       )
 
-    const newCount = ++data.messageCount
+    const newCount =
+      typeof data.messageCount === "number" ? ++data.messageCount : 1
 
     await t.update(groupRef, {
       messageCount: newCount,
