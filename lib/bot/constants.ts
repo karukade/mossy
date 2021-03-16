@@ -1,6 +1,6 @@
-export const TREE_URL = process.env.VERCEL_URL as string
+export const TREE_URL = process.env.MOSSY_DOMAIN as string
 
-const MOSS_URL = "https://search.rakuten.co.jp/search/mall/%E8%8B%94/"
+const MOSS_URL = process.env.MOSS_URL as string
 
 export const MESSAGES = {
   url: (groupId: string) => `${TREE_URL}/tree/${groupId}\nだよ！`,
