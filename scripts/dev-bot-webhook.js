@@ -1,7 +1,9 @@
 const path = require("path")
+const fs = require("fs").promises
+const envPath = path.resolve(__dirname, "../.env.local")
 
 require("dotenv").config({
-  path: path.resolve(__dirname, "../.env.local"),
+  path: envPath,
 })
 
 const ngrok = require("ngrok")
@@ -25,11 +27,16 @@ const PORT = 3000
     body: JSON.stringify({
       endpoint: `${endpoint}/api/bot`,
     }),
-  }).then((d) => {
+  }).then(async (d) => {
     if (d.status !== 200) {
       console.error(`Request failed with status ${d.status}`)
       process.exit(0)
     }
+    const env = await fs.readFile(envPath, { encoding: "utf-8" })
+    return fs.writeFile(
+      envPath,
+      env.replace(/^(MOSSY_DOMAIN=).+$/m, `$1${endpoint}`)
+    )
   })
   console.log(`forward http://localhost:${PORT} -> ${endpoint}`)
 })()
