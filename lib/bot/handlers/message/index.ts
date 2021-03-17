@@ -11,6 +11,7 @@ import lineClient, {
 } from "~/lib/bot/lineClient"
 import { extractGroupOrRoomId, isGroupeOrRoomEvent } from "../utils"
 import { MESSAGES } from "../../constants"
+import { POSITIVE_THRESHOLD } from "~/lib/bot/constants"
 
 type EventBase<Event extends MessageEvent["message"]> = {
   groupId: string
@@ -69,8 +70,11 @@ const handlers = {
 
     const score = await analyzeSentiment(text)
 
+    if (process.env.NODE_ENV === "development")
+      await sendTextMessage(groupId, JSON.stringify(score))
+
     const positiveScore = score?.score ? score.score * 100 : 0
-    const isPositive = positiveScore >= 0
+    const isPositive = positiveScore >= POSITIVE_THRESHOLD
 
     const userProfile = await getMemberProfile(type, groupId, userId)
     await addMember(groupId, userProfile)
