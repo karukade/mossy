@@ -2,7 +2,7 @@ import * as line from "@line/bot-sdk"
 import { getDecryptedSecret } from "~/lib/utils"
 import { LINE_CONFIG_ENCRYPTED } from "./constants"
 
-const config = getDecryptedSecret(LINE_CONFIG_ENCRYPTED)
+export const config = getDecryptedSecret(LINE_CONFIG_ENCRYPTED)
 
 class Client {
   private static _instance: line.Client
@@ -15,8 +15,6 @@ class Client {
 export type LineEventObject = {
   events: line.WebhookEvent[]
 }
-
-console.log("CONFIG", config)
 
 export const middleWare = line.middleware(config)
 
