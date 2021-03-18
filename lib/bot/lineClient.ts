@@ -2,7 +2,7 @@ import * as line from "@line/bot-sdk"
 import { getDecryptedSecret } from "~/lib/utils"
 import { LINE_CONFIG_ENCRYPTED } from "./constants"
 
-export const config = getDecryptedSecret(LINE_CONFIG_ENCRYPTED)
+const config = getDecryptedSecret(LINE_CONFIG_ENCRYPTED)
 
 class Client {
   private static _instance: line.Client

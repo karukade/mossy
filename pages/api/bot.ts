@@ -1,11 +1,7 @@
 import { SignatureValidationFailed } from "@line/bot-sdk"
 import { IncomingMessage, ServerResponse } from "http"
 import { webhookHandler } from "~/lib/bot/handlers"
-import lineClient, {
-  LineEventObject,
-  middleWare,
-  config as lineConfig,
-} from "~/lib/bot/lineClient"
+import lineClient, { LineEventObject, middleWare } from "~/lib/bot/lineClient"
 
 /**
  * line middleware を使うのでbodyParserはfalse
@@ -41,7 +37,6 @@ export default async (
   }
 
   try {
-    console.log("CONFIG", lineConfig)
     await runMiddleware(req, res, middleWare)
   } catch (e) {
     if (!(e instanceof SignatureValidationFailed)) {
