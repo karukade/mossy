@@ -16,6 +16,8 @@ export type LineEventObject = {
   events: line.WebhookEvent[]
 }
 
+console.log("CONFIG", config)
+
 export const middleWare = line.middleware(config)
 
 export const getMemberProfile = (
