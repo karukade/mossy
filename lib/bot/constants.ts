@@ -7,7 +7,8 @@ export const MESSAGES = {
   grow: (groupId: string) =>
     `みんなの言葉のおかげで木が育ってきたよ🌲\n${TREE_URL}/tree/${groupId}`,
   mossLink: () =>
-    `みんなならきっとリアルでも植物を育てられるんじゃないかな🌲\n${MOSS_URL}`,
+    `このチャットの木はみんなのおかげでとっても大きくなったから、
+そろそろリアルでもみんなで植物を育ててみない？🌲\n${MOSS_URL}`,
 }
 
 export const LINE_CONFIG_ENCRYPTED =
