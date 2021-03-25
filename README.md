@@ -1,30 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
+## 依存関係インストール
 
 ```bash
-npm run dev
-# or
+yarn
+```
+
+## 開発時やること
+
+- firestore エミュレーターの起動
+- localhost:3000 に外部からアクセスできるよう ngrok でポートフォワード
+- 開発サーバーを localhost:3000 で起動
+
+## ngrok でポートフォワード
+
+```bash
+yarn bot:webhook
+```
+
+### やっていること
+
+開発時は、ボットへのメッセージでトリガーされる webhook イベントを、ローカルで起動したサーバーで待ち受けられるよう、ngrok というツールで一時的にローカルサーバーを外部ネットワークからアクセスできる状態にします。
+
+- localhost:3000 をポートフォワード
+- 払い出された外部からアクセス可能な url を line bot の webhook 先に指定
+- `.env.local`の`MOSSY_DOMAIN`を払い出された URL に書き換え
+
+## 開発用サーバーの起動
+
+```bash
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+サーバーは以下 2 点を行います。
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+1. line bot の webhook 待ち受け(/api/bot)
+2. ポジティブツリーへのリクエスト待ち受け(/tree/{各グループのグループ ID})
 
-## Learn More
+## デプロイ
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+github の master ブランチへの push で vercel にデプロイされます。
