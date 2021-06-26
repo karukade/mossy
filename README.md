@@ -39,3 +39,6 @@ yarn dev
 ## デプロイ
 
 github の master ブランチへの push で vercel にデプロイされます。
+
+### ref
+https://leerob.io/blog/vercel-env-variables-size-limit
